@@ -1,12 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public GameObject background;
-    public AudioSource microphone;
+    [SerializeField]
+    protected GameObject background;
+
+    [SerializeField]
+    protected AudioSource microphone;
+
+    [SerializeField]
+    protected KeyCode restartKeyCode = KeyCode.Return;
+
     private int currentStage;
+    private IEnumerator gameRoutine;
 
     IEnumerator Scheduler()
     {
@@ -23,7 +30,15 @@ public class Manager : MonoBehaviour
         AudioAnalyzer.disabled = false;
     }
 
-    // Use this for initialization
+    private void Restart()
+    {
+        StopCoroutine(gameRoutine);
+        currentStage = 0;
+
+        gameRoutine = Scheduler();
+        StartCoroutine(gameRoutine);
+    }
+
     void Start()
     {
         if (Display.displays.Length > 1)
@@ -39,12 +54,18 @@ public class Manager : MonoBehaviour
             Debug.Log("App requires 3 displays, but only " + Display.displays.Length + " are connected");
         }
 
-        StartCoroutine(Scheduler());
+        gameRoutine = Scheduler();
+
+        Restart();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(restartKeyCode))
+        {
+            SoundManager.Instance.playError();
+            Restart();
+        }
 
         switch (currentStage)
         {
@@ -60,6 +81,5 @@ public class Manager : MonoBehaviour
             default:
                 break;
         }
-
     }
 }
