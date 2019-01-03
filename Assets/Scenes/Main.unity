@@ -281,6 +281,25 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011021278070, guid: 7a2053ad8e2dd1d408d858e4302cbda5,
+        type: 2}
+      propertyPath: useBakedAudio
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8200000, guid: 7a2053ad8e2dd1d408d858e4302cbda5, type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011021278070, guid: 7a2053ad8e2dd1d408d858e4302cbda5,
+        type: 2}
+      propertyPath: fallRate
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011021278070, guid: 7a2053ad8e2dd1d408d858e4302cbda5,
+        type: 2}
+      propertyPath: climbRate
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7a2053ad8e2dd1d408d858e4302cbda5, type: 2}
   m_IsPrefabParent: 0
@@ -1070,6 +1089,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1888690523 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011021278070, guid: 7a2053ad8e2dd1d408d858e4302cbda5,
+    type: 2}
+  m_PrefabInternal: {fileID: 381282576}
+  m_Script: {fileID: 11500000, guid: 58277f9b1f0464f44bb4e32741a68b15, type: 3}
 --- !u!1 &1945159809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,6 +1126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 1024708418}
   microphone: {fileID: 716294747}
+  analyzer: {fileID: 1888690523}
+  restartKeyCode: 13
 --- !u!4 &1945159811
 Transform:
   m_ObjectHideFlags: 0

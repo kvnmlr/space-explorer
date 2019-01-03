@@ -10,6 +10,9 @@ public class Manager : MonoBehaviour
     protected AudioSource microphone;
 
     [SerializeField]
+    protected AudioAnalyzer analyzer;
+
+    [SerializeField]
     protected KeyCode restartKeyCode = KeyCode.Return;
 
     private int currentStage;
@@ -24,10 +27,11 @@ public class Manager : MonoBehaviour
         SoundManager.Instance.playSuccess();
         AudioAnalyzer.disabled = true;
         currentStage = 1;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         SoundManager.Instance.playSuccess();
         currentStage = 2;
         AudioAnalyzer.disabled = false;
+        StartCoroutine(analyzer.Record(2, "test"));
     }
 
     private void Restart()

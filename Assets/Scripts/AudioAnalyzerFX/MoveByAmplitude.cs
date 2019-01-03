@@ -3,8 +3,6 @@ using System.Collections;
 
 public class MoveByAmplitude : MonoBehaviour 
 {
-	
-	
 	[SerializeField]
 	[Range(0, 3)]
 	protected int listenBand;
