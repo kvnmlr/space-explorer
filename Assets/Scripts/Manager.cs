@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -17,6 +18,8 @@ public class Manager : MonoBehaviour
 
     private int currentStage;
     private IEnumerator gameRoutine;
+    private string UUID;
+    private string recordingsRoot;
 
     IEnumerator Scheduler()
     {
@@ -31,13 +34,14 @@ public class Manager : MonoBehaviour
         SoundManager.Instance.playSuccess();
         currentStage = 2;
         AudioAnalyzer.disabled = false;
-        StartCoroutine(analyzer.Record(2, "test"));
+        StartCoroutine(analyzer.Record(2, recordingsRoot + "/" + UUID + "/test.wav"));
     }
 
     private void Restart()
     {
         StopCoroutine(gameRoutine);
         currentStage = 0;
+        UUID = GetUniqueID();
 
         gameRoutine = Scheduler();
         StartCoroutine(gameRoutine);
@@ -45,6 +49,7 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
+        recordingsRoot = Application.persistentDataPath + "/Recordings/";
         if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
@@ -85,5 +90,19 @@ public class Manager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public static string GetUniqueID()
+    {
+        string key = "ID";
+
+        var random = new System.Random();
+        DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
+        double timestamp = (System.DateTime.UtcNow - epochStart).TotalMilliseconds;
+
+        string uniqueID = string.Format("{0:X}", Convert.ToInt64(timestamp));
+
+        Debug.Log("Generated Unique ID: " + uniqueID);
+        return uniqueID;
     }
 }
