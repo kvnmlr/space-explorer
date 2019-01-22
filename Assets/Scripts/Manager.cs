@@ -24,13 +24,11 @@ public class Manager : MonoBehaviour
     IEnumerator Scheduler()
     {
         AudioAnalyzer.disabled = false;
-        yield return new WaitForSeconds(0.5f);
-        SoundManager.Instance.playSuccess();
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0);
         SoundManager.Instance.playSuccess();
         AudioAnalyzer.disabled = true;
         currentStage = 1;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(60);
         SoundManager.Instance.playSuccess();
         currentStage = 2;
         AudioAnalyzer.disabled = false;
@@ -60,7 +58,7 @@ public class Manager : MonoBehaviour
             }
         } else
         {
-            Debug.Log("App requires 3 displays, but only " + Display.displays.Length + " are connected");
+            Debug.Log("App supports 3 displays, but only " + Display.displays.Length + " are connected");
         }
 
         gameRoutine = Scheduler();
@@ -80,7 +78,7 @@ public class Manager : MonoBehaviour
         {
             case 1:
                 // Move the object upward in world space 1 unit/second.
-                background.transform.Translate(Vector3.back * Time.deltaTime, Space.World);
+                background.transform.Translate(Vector3.back * Time.deltaTime * 10, Space.World);
 
                 break;
             case 2:
