@@ -7,19 +7,25 @@ public class Rotate : MonoBehaviour
     public float speed = 10;
     public bool clockwise = true;
 
-    private int time;
-
 
     // Use this for initialization
     void Start()
     {
-        transform.rotation = new Quaternion(0, 0, Random.rotation.z, 1);
+        if (!clockwise)
+        {
+            speed *= -1;
+        }
+        transform.localEulerAngles = new Vector3(0, 180, Random.Range(0f, 360.0f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Rotate(new Vector3(0, 0, speed * Time.deltaTime * 5), Space.Self);
+        //transform.RotateAround(transform.position, transform.up, Time.deltaTime * speed);
+
+        //transform.Rotate((clockwise ? transform.forward * -1 : transform.forward), speed * Time.deltaTime);
+
     }
 }
 
