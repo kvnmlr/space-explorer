@@ -28,7 +28,7 @@ public class Manager : MonoBehaviour
         SoundManager.Instance.playSuccess();
         AudioAnalyzer.disabled = true;
         currentStage = 1;
-        yield return new WaitForSeconds(60);
+        yield return new WaitForSeconds(70);
         SoundManager.Instance.playSuccess();
         currentStage = 2;
         AudioAnalyzer.disabled = false;
