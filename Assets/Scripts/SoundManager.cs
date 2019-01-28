@@ -9,7 +9,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip success;
     public AudioClip tap;
 
-    AudioSource audioSource;
+    public AudioSource audioSource;
 
     void Start()
     {

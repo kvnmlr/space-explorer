@@ -23,16 +23,21 @@ public class Manager : MonoBehaviour
 
     IEnumerator Scheduler()
     {
+        yield return new WaitForSeconds(1);
         AudioAnalyzer.disabled = false;
-        yield return new WaitForSeconds(0);
-        SoundManager.Instance.playSuccess();
-        AudioAnalyzer.disabled = true;
+
+        yield return new WaitForSeconds(10);
         currentStage = 1;
-        yield return new WaitForSeconds(70);
         SoundManager.Instance.playSuccess();
+        StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test.wav"));
+
+        yield return new WaitForSeconds(10);
+        SoundManager.Instance.playSuccess();
+        StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test2.wav"));
+
+        yield return new WaitForSeconds(50);
         currentStage = 2;
         AudioAnalyzer.disabled = false;
-        StartCoroutine(analyzer.Record(2, recordingsRoot + "/" + UUID + "/test.wav"));
     }
 
     private void Restart()
