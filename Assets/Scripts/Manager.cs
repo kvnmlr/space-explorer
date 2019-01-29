@@ -23,19 +23,43 @@ public class Manager : MonoBehaviour
 
     IEnumerator Scheduler()
     {
+        SoundManager.Instance.audioSource.volume = 1f;
+        SoundManager.Instance.audioSource.panStereo = 0f;
+
         yield return new WaitForSeconds(1);
+        currentStage = 1;
         AudioAnalyzer.disabled = false;
 
         yield return new WaitForSeconds(10);
-        currentStage = 1;
         SoundManager.Instance.playSuccess();
         StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test.wav"));
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
         SoundManager.Instance.playSuccess();
         StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test2.wav"));
 
-        yield return new WaitForSeconds(50);
+        yield return new WaitForSeconds(4);
+        SoundManager.Instance.audioSource.panStereo = 0.6f;
+        SoundManager.Instance.playThruster();
+
+        yield return new WaitForSeconds(5.5f);
+        SoundManager.Instance.audioSource.volume = 0.1f;
+        SoundManager.Instance.playComet();
+
+
+        yield return new WaitForSeconds(4);
+        SoundManager.Instance.audioSource.volume = 1f;
+        SoundManager.Instance.audioSource.panStereo = -0.6f;
+        SoundManager.Instance.playThruster();
+
+        yield return new WaitForSeconds(18);
+        SoundManager.Instance.audioSource.volume = 0.2f;
+        SoundManager.Instance.playComet();
+        yield return new WaitForSeconds(6);
+        SoundManager.Instance.audioSource.volume = 0.1f;
+        SoundManager.Instance.playComet();
+
+        yield return new WaitForSeconds(17.5f);
         currentStage = 2;
         AudioAnalyzer.disabled = false;
     }

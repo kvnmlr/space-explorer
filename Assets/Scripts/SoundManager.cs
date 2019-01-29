@@ -8,6 +8,9 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip error;
     public AudioClip success;
     public AudioClip tap;
+    public AudioClip truster;
+    public AudioClip comet;
+
 
     public AudioSource audioSource;
 
@@ -34,5 +37,15 @@ public class SoundManager : Singleton<SoundManager>
     public void playTap()
     {
         audioSource.PlayOneShot(tap, 0.7F);
+    }
+
+    public void playThruster()
+    {
+        audioSource.PlayOneShot(truster, 0.7F);
+    }
+
+    public void playComet()
+    {
+        audioSource.PlayOneShot(comet, 0.7F);
     }
 }
