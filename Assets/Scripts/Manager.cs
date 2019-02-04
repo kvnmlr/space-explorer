@@ -25,43 +25,57 @@ public class Manager : MonoBehaviour
     {
         SoundManager.Instance.audioSource.volume = 1f;
         SoundManager.Instance.audioSource.panStereo = 0f;
+        SoundManager.Instance.playAmbient();
 
         yield return new WaitForSeconds(1);
         currentStage = 1;
         AudioAnalyzer.disabled = false;
 
-        yield return new WaitForSeconds(10);
-        SoundManager.Instance.playSuccess();
-        StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test.wav"));
+        yield return new WaitForSeconds(6);
 
-        yield return new WaitForSeconds(5);
-        SoundManager.Instance.playSuccess();
-        StartCoroutine(analyzer.Record(5, recordingsRoot + "/" + UUID + "/test2.wav"));
+        SoundManager.Instance.playVoice(0);
+        yield return new WaitForSeconds(11f);
 
-        yield return new WaitForSeconds(4);
+        SoundManager.Instance.playSuccess();
+        StartCoroutine(analyzer.Record(3, recordingsRoot + "/" + UUID + "/test1.wav"));
+        yield return new WaitForSeconds(3);
+
         SoundManager.Instance.audioSource.panStereo = 0.6f;
         SoundManager.Instance.playThruster();
 
-        yield return new WaitForSeconds(5.5f);
-        SoundManager.Instance.audioSource.volume = 0.1f;
-        SoundManager.Instance.playComet();
+        yield return new WaitForSeconds(6);
+        SoundManager.Instance.playVoice(1);
 
-
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(3);
         SoundManager.Instance.audioSource.volume = 1f;
         SoundManager.Instance.audioSource.panStereo = -0.6f;
         SoundManager.Instance.playThruster();
 
-        yield return new WaitForSeconds(18);
-        SoundManager.Instance.audioSource.volume = 0.2f;
-        SoundManager.Instance.playComet();
-        yield return new WaitForSeconds(6);
-        SoundManager.Instance.audioSource.volume = 0.1f;
-        SoundManager.Instance.playComet();
+       
+        yield return new WaitForSeconds(9.5f);
 
-        yield return new WaitForSeconds(17.5f);
+        SoundManager.Instance.playVoice(2);
+        yield return new WaitForSeconds(6.5f);
+
+        SoundManager.Instance.playSuccess();
+        StartCoroutine(analyzer.Record(8, recordingsRoot + "/" + UUID + "/test2.wav"));
+        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(8);
+
+        SoundManager.Instance.playVoice(3);
+        yield return new WaitForSeconds(9);
         currentStage = 2;
         AudioAnalyzer.disabled = false;
+
+        yield return new WaitForSeconds(7.5f);
+        yield return new WaitForSeconds(15f);
+
+        SoundManager.Instance.playVoice(4);
+        yield return new WaitForSeconds(1.5f);
+
+        yield return new WaitForSeconds(15f);
+        SoundManager.Instance.playVoice(5);
+
     }
 
     private void Restart()

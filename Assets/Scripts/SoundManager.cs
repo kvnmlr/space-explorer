@@ -10,13 +10,22 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip tap;
     public AudioClip truster;
     public AudioClip comet;
+    public AudioClip ambient;
+    public AudioClip[] voices;
 
 
     public AudioSource audioSource;
+    public AudioSource voiceAudioSource;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+    }
+
+    public void playVoice(int i)
+    {
+        voiceAudioSource.clip = voices[i];
+        voiceAudioSource.Play();
     }
 
     public void playOpen()
@@ -41,11 +50,16 @@ public class SoundManager : Singleton<SoundManager>
 
     public void playThruster()
     {
-        audioSource.PlayOneShot(truster, 0.7F);
+        audioSource.PlayOneShot(truster, 0.2F);
     }
 
     public void playComet()
     {
         audioSource.PlayOneShot(comet, 0.7F);
+    }
+
+    public void playAmbient()
+    {
+        audioSource.PlayOneShot(ambient, 0.05F);
     }
 }

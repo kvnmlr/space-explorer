@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 
 public class SpeakByVolume : MonoBehaviour {
@@ -11,7 +12,7 @@ public class SpeakByVolume : MonoBehaviour {
 
     private float currentUpdateTime = 0f;
     private float clipLoudness;
-    private float loudnessThreshold = 0.06f;
+    private float loudnessThreshold = 0.01f;
     private float[] clipSampleData;
     private bool speak = true;
     private float timeSinceSpeechStart;
@@ -19,6 +20,8 @@ public class SpeakByVolume : MonoBehaviour {
     #region Unity Methods
     void Start()
     {
+        mouthOpen.SetActive(false);
+        mouthClosed.SetActive(true);
         clipSampleData = new float[sampleDataLength];
     }
 
@@ -34,7 +37,13 @@ public class SpeakByVolume : MonoBehaviour {
             currentUpdateTime = 0f;
 
             // read 1024 samples, which is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip
-            source.clip.GetData(clipSampleData, source.timeSamples); 
+            try
+            {
+                source.clip.GetData(clipSampleData, source.timeSamples);
+            } catch (Exception)
+            {
+                return;
+            }
             clipLoudness = 0f;
             foreach (var sample in clipSampleData)
             {
@@ -47,7 +56,7 @@ public class SpeakByVolume : MonoBehaviour {
         Debug.Log(clipLoudness);
         float deltaTime = Time.time * 1000 - timeSinceSpeechStart;
 
-        float swithSpeed = mouthSpeed * (mouthClosed.activeSelf ? Random.Range(0.2f, 0.5f) : Random.Range(0.5f, 2f));
+        float swithSpeed = mouthSpeed * (mouthClosed.activeSelf ? UnityEngine.Random.Range(0.2f, 0.5f) : UnityEngine.Random.Range(0.5f, 2f));
 
         if (deltaTime > swithSpeed)
         {
