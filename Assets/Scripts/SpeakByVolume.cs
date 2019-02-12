@@ -52,8 +52,6 @@ public class SpeakByVolume : MonoBehaviour {
             clipLoudness /= sampleDataLength;
         }
 
-
-        Debug.Log(clipLoudness);
         float deltaTime = Time.time * 1000 - timeSinceSpeechStart;
 
         float swithSpeed = mouthSpeed * (mouthClosed.activeSelf ? UnityEngine.Random.Range(0.2f, 0.5f) : UnityEngine.Random.Range(0.5f, 2f));

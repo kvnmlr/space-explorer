@@ -16,16 +16,62 @@ public class Manager : MonoBehaviour
     [SerializeField]
     protected KeyCode restartKeyCode = KeyCode.Return;
 
+    private bool isPlaying = false;
+
+
+    public Animator cameraAnimator;
+    public Animator liloAnimator;
+    public Animator rocketAnimator;
+
     private int currentStage;
     private IEnumerator gameRoutine;
+    private IEnumerator playbackRoutine;
     private string UUID;
     private string recordingsRoot;
 
-    IEnumerator Scheduler()
+    IEnumerator PlayBack()
     {
+        isPlaying = false;
+
         SoundManager.Instance.audioSource.volume = 1f;
         SoundManager.Instance.audioSource.panStereo = 0f;
         SoundManager.Instance.playAmbient();
+        AudioAnalyzer.disabled = false;
+
+        SoundManager.Instance.playVoice(0);
+        yield return new WaitForSeconds(11f);
+
+        StartCoroutine(SoundManager.Instance.playFile(recordingsRoot + "/" + UUID + "/name.wav"));
+        yield return new WaitForSeconds(3);
+
+        SoundManager.Instance.playVoice(1);
+        yield return new WaitForSeconds(11);
+
+        SoundManager.Instance.playVoice(2);
+        yield return new WaitForSeconds(7f);
+
+        StartCoroutine(SoundManager.Instance.playFile(recordingsRoot + "/" + UUID + "/mitnehmen.wav"));
+        yield return new WaitForSeconds(8);
+    }
+
+
+    IEnumerator Scheduler()
+    {
+        isPlaying = true;
+        
+        SoundManager.Instance.audioSource.volume = 1f;
+        SoundManager.Instance.audioSource.panStereo = 0f;
+        SoundManager.Instance.playAmbient();
+
+        UUID = GetUniqueID();
+
+        cameraAnimator.enabled = true;
+        liloAnimator.enabled = true;
+        rocketAnimator.enabled = true;
+
+        cameraAnimator.Play(0);
+        liloAnimator.Play(0);
+        rocketAnimator.Play(0);
 
         yield return new WaitForSeconds(1);
         currentStage = 1;
@@ -36,8 +82,7 @@ public class Manager : MonoBehaviour
         SoundManager.Instance.playVoice(0);
         yield return new WaitForSeconds(11f);
 
-        SoundManager.Instance.playSuccess();
-        StartCoroutine(analyzer.Record(3, recordingsRoot + "/" + UUID + "/test1.wav"));
+        StartCoroutine(analyzer.Record(3, recordingsRoot + "/" + UUID + "/name.wav"));
         yield return new WaitForSeconds(3);
 
         SoundManager.Instance.audioSource.panStereo = 0.6f;
@@ -57,8 +102,7 @@ public class Manager : MonoBehaviour
         SoundManager.Instance.playVoice(2);
         yield return new WaitForSeconds(6.5f);
 
-        SoundManager.Instance.playSuccess();
-        StartCoroutine(analyzer.Record(8, recordingsRoot + "/" + UUID + "/test2.wav"));
+        StartCoroutine(analyzer.Record(8, recordingsRoot + "/" + UUID + "/mitnehmen.wav"));
         yield return new WaitForSeconds(8);
         yield return new WaitForSeconds(8);
 
@@ -78,19 +122,29 @@ public class Manager : MonoBehaviour
 
     }
 
-    private void Restart()
+    private void Reset()
     {
         StopCoroutine(gameRoutine);
-        currentStage = 0;
-        UUID = GetUniqueID();
+        StopCoroutine(playbackRoutine);
 
+        currentStage = 0;
+
+        cameraAnimator.Rebind();
+        liloAnimator.Rebind();
+        rocketAnimator.Rebind();
+
+        cameraAnimator.enabled = false;
+        liloAnimator.enabled = false;
+        rocketAnimator.enabled = false;
+
+        background.transform.position = new Vector3(0, 0, 0);
         gameRoutine = Scheduler();
-        StartCoroutine(gameRoutine);
+        playbackRoutine = PlayBack();
     }
 
     void Start()
     {
-        recordingsRoot = Application.persistentDataPath + "/Recordings/";
+        recordingsRoot = Application.persistentDataPath + "/Recordings";
         if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
@@ -104,18 +158,37 @@ public class Manager : MonoBehaviour
             Debug.Log("App supports 3 displays, but only " + Display.displays.Length + " are connected");
         }
 
-        gameRoutine = Scheduler();
+        cameraAnimator.enabled = false;
+        liloAnimator.enabled = false;
+        rocketAnimator.enabled = false;
 
-        Restart();
+        gameRoutine = Scheduler();
+        playbackRoutine = PlayBack();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(restartKeyCode))
+        if (Input.GetKeyUp(restartKeyCode))
         {
-            SoundManager.Instance.playError();
-            Restart();
-        }
+            if (!isPlaying)
+            {
+                SoundManager.Instance.playError();
+                Reset();
+                SoundManager.Instance.stopVoice();
+                SoundManager.Instance.stopSounds();
+                StartCoroutine(gameRoutine);
+
+            } else
+            {
+                isPlaying = false;
+                SoundManager.Instance.playError();
+                Reset();
+                SoundManager.Instance.stopVoice();
+                Debug.Log("Current UID: " + UUID);
+                StartCoroutine(playbackRoutine);
+            }
+
+        }     
 
         switch (currentStage)
         {

@@ -22,6 +22,32 @@ public class SoundManager : Singleton<SoundManager>
         audioSource = GetComponent<AudioSource>();
     }
 
+    public IEnumerator playFile(string filename)
+    {
+        Debug.Log(filename);
+        //AudioClip clip = (AudioClip)Resources.Load(filename);
+        //audioSource.clip = clip;
+        //audioSource.PlayOneShot(clip);
+
+        string path = "file:///" + filename;
+
+        WWW www = new WWW(path);
+        yield return www;
+        AudioClip clip = www.GetAudioClip(false, false, AudioType.WAV);
+        //auSource.clip = clip;
+        audioSource.PlayOneShot(clip);
+    }
+
+    public void stopVoice()
+    {
+        voiceAudioSource.Stop();
+    }
+
+    public void stopSounds()
+    {
+        audioSource.Stop();
+    }
+
     public void playVoice(int i)
     {
         voiceAudioSource.clip = voices[i];
