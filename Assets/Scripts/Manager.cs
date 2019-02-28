@@ -35,7 +35,6 @@ public class Manager : MonoBehaviour
 
         SoundManager.Instance.audioSource.volume = 1f;
         SoundManager.Instance.audioSource.panStereo = 0f;
-        SoundManager.Instance.playAmbient();
         AudioAnalyzer.disabled = false;
 
         SoundManager.Instance.playVoice(0);
@@ -145,7 +144,7 @@ public class Manager : MonoBehaviour
     void Start()
     {
         recordingsRoot = Application.persistentDataPath + "/Recordings";
-        if (Display.displays.Length > 1)
+        /*if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
 
@@ -156,7 +155,7 @@ public class Manager : MonoBehaviour
         } else
         {
             Debug.Log("App supports 3 displays, but only " + Display.displays.Length + " are connected");
-        }
+        }*/
 
         cameraAnimator.enabled = false;
         liloAnimator.enabled = false;
